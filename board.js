@@ -101,7 +101,8 @@ export default class Board {
                 var ele = document.createElement('div')
                 ele.classList.add('ele')
                 if (this.board[i][j] != '0')
-                ele.innerText = this.board[i][j]
+                    ele.innerText = this.board[i][j]
+                if (i == this.solutionMap[this.board[i][j]][0] && j == this.solutionMap[this.board[i][j]][1]) ele.classList.add('correct')
                 row.appendChild(ele)
             }
 
@@ -167,8 +168,9 @@ export default class Board {
         var path = []
         var visited = []
         var solution = newArray(this.getSize())
-        queue.push([this.board, [], 0])
+        queue.push([this.board, [], 0, 0])
         cont = 0
+        var coste = 0
         while (!queue.isEmpty()) {
             element = queue.pop()
             cont++
@@ -192,7 +194,8 @@ export default class Board {
                 for (i in hijos) {
                     path = element[1].slice()
                     path.push(hijos[i][1])
-                    queue.push([hijos[i][0], path, this.manhattan(hijos[i][0])])
+                    coste = element[3] + 1
+                    queue.push([hijos[i][0], path, this.manhattan(hijos[i][0]) + coste/2, coste])
                 }
             }
         }
